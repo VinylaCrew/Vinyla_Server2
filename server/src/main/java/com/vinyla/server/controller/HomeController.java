@@ -22,6 +22,7 @@ public class HomeController {
 
     @GetMapping("/{userIdx}")
     public ResponseEntity homeInfo(@PathVariable int userIdx){
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.HOME_INFO_SUCCESS, homeService.homeUserInfo(userIdx)), HttpStatus.OK);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                ResponseMessage.HOME_INFO_SUCCESS, homeService.homeUserInfo(userIdx)), HttpStatus.OK);
     }
 }
