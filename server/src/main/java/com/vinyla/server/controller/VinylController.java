@@ -18,12 +18,23 @@ public class VinylController {
     VinylService vinylService;
 
     @GetMapping("/search")
-    public ResponseEntity search(@RequestParam(value = "q") String q){
-        if(q.isEmpty()){
+    public ResponseEntity search(@RequestParam(required = false) String q){
+        if(q == null){
             return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
                     ResponseMessage.NO_SEARCH_WORD), HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
                 ResponseMessage.VINYL_SEARCH_SUCCESS, vinylService.search(q)), HttpStatus.OK);
     }
+
+    @GetMapping(value={"/search/detail/{id}", "/search/detail"})
+    public ResponseEntity searchDetail(@PathVariable(required = false) Integer id){
+        if(id == null){
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
+                    ResponseMessage.NO_VINYL_ID), HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                ResponseMessage.VINYL_SEARCH_DETAIL_SUCCESS, vinylService.searchDetail(id)), HttpStatus.OK);
+    }
+
 }
