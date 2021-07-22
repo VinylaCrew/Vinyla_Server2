@@ -1,8 +1,6 @@
 package com.vinyla.server.service;
 
-import com.vinyla.server.dto.DiscogsSearch;
-import com.vinyla.server.dto.Results;
-import com.vinyla.server.dto.SearchVinylDto;
+import com.vinyla.server.dto.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -30,13 +28,13 @@ public class VinylService {
     private final WebClient webClient;
 
     public VinylService(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://api.discogs.com/database/search").build();
+        this.webClient = webClientBuilder.baseUrl("https://api.discogs.com").build();
     }
 
     public List<SearchVinylDto> search(String q) {
         List<SearchVinylDto> searchVinylDtoList = new ArrayList<>();
 
-        Mono<DiscogsSearch> resp = this.webClient.get().uri("?q="+q+"&type=release&key="+key+"&secret="+secret).accept(MediaType.APPLICATION_JSON)
+        Mono<DiscogsSearch> resp = this.webClient.get().uri("/database/search?q="+q+"&type=release&key="+key+"&secret="+secret).accept(MediaType.APPLICATION_JSON)
                 .retrieve().bodyToMono(DiscogsSearch.class).log();
 
         Mono<List<Results>> response = resp.map(DiscogsSearch::getResults);
@@ -54,5 +52,35 @@ public class VinylService {
         }
 
         return searchVinylDtoList;
+    }
+
+    public SearchDetailVinylDto searchDetail(int id){
+        SearchDetailVinylDto searchDetailVinylDto = new SearchDetailVinylDto();
+        List<TrackList> responseTL = new ArrayList<>();
+
+        Mono<DiscogsSearchDetail> resp = this.webClient.get().uri("/releases/"+id).accept(MediaType.APPLICATION_JSON)
+                .retrieve().bodyToMono(DiscogsSearchDetail.class).log();
+        DiscogsSearchDetail response = resp.block();
+
+        searchDetailVinylDto.setId(response.getId());
+        searchDetailVinylDto.setTitle(response.getTitle());
+//        searchDetailVinylDto.setThumb(response.getThumb());
+        searchDetailVinylDto.setArtist(response.getArtists_sort());
+        searchDetailVinylDto.setReleased(response.getReleased());
+        searchDetailVinylDto.setGenres(response.getGenres());
+
+        Mono<List<TrackList>> respTL = resp.map(DiscogsSearchDetail::getTracklist);
+        List<TrackList> tracklists = respTL.block();
+
+        for(int i = 0; i < tracklists.size(); i++){
+            TrackList tl = new TrackList();
+            tl.setPosition(tracklists.get(i).getPosition());
+            tl.setTitle(tracklists.get(i).getTitle());
+            tl.setDuration(tracklists.get(i).getDuration());
+            responseTL.add(tl);
+        }
+        searchDetailVinylDto.setTracklist(responseTL);
+
+        return searchDetailVinylDto;
     }
 }
