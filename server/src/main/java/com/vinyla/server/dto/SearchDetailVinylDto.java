@@ -13,8 +13,8 @@ public class SearchDetailVinylDto {
     int id;
     String title;
     String artist;
-//    String thumb;
+    String cover_img;
     String released;
     List<String> genres;
-    List<TrackList> tracklist;
+    List<Track> tracklist;
 }

@@ -14,7 +14,7 @@ public class DiscogsSearchDetail {
     String title;
     String artists_sort;
     String released;
-    String thumb;
+    List<Image> images;
     List<String> genres;
-    List<TrackList> tracklist;
+    List<Track> tracklist;
 }

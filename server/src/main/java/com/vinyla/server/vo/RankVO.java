@@ -6,5 +6,4 @@ import lombok.Data;
 public class RankVO {
     int rankIdx;
     String rankName;
-    String rankIcon;
 }

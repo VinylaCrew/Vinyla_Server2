@@ -8,4 +8,7 @@ public class VinylVO {
     String title;
     String imageUrl;
     String artist;
+    float rate;
+    int rateCount;
+    int id;
 }

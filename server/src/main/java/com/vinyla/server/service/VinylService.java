@@ -42,7 +42,7 @@ public class VinylService {
         for(int i = 0; i < results.size(); i++){
             SearchVinylDto searchVinylDto = new SearchVinylDto();
             searchVinylDto.setId(results.get(i).id);
-            searchVinylDto.setCoverImage(results.get(i).cover_image);
+            searchVinylDto.setThumb(results.get(i).thumb);
             String titleArtist = results.get(i).title;
             String[] ta = titleArtist.split("-");
 
@@ -56,7 +56,7 @@ public class VinylService {
 
     public SearchDetailVinylDto searchDetail(int id){
         SearchDetailVinylDto searchDetailVinylDto = new SearchDetailVinylDto();
-        List<TrackList> responseTL = new ArrayList<>();
+        List<Track> responseTL = new ArrayList<>();
 
         Mono<DiscogsSearchDetail> resp = this.webClient.get().uri("/releases/"+id).accept(MediaType.APPLICATION_JSON)
                 .retrieve().bodyToMono(DiscogsSearchDetail.class).log();
@@ -64,16 +64,26 @@ public class VinylService {
 
         searchDetailVinylDto.setId(response.getId());
         searchDetailVinylDto.setTitle(response.getTitle());
-//        searchDetailVinylDto.setThumb(response.getThumb());
         searchDetailVinylDto.setArtist(response.getArtists_sort());
         searchDetailVinylDto.setReleased(response.getReleased());
         searchDetailVinylDto.setGenres(response.getGenres());
 
-        Mono<List<TrackList>> respTL = resp.map(DiscogsSearchDetail::getTracklist);
-        List<TrackList> tracklists = respTL.block();
+        Mono<List<Image>> respImg = resp.map(DiscogsSearchDetail::getImages);
+        List<Image> images = respImg.block();
+
+        for(int i = 0; i < images.size(); i++){
+//            Image img = new Image();
+            if(images.get(i).getType().equals("primary")){
+                searchDetailVinylDto.setCover_img(images.get(i).getUri());
+                break;
+            }
+        }
+
+        Mono<List<Track>> respTL = resp.map(DiscogsSearchDetail::getTracklist);
+        List<Track> tracklists = respTL.block();
 
         for(int i = 0; i < tracklists.size(); i++){
-            TrackList tl = new TrackList();
+            Track tl = new Track();
             tl.setPosition(tracklists.get(i).getPosition());
             tl.setTitle(tracklists.get(i).getTitle());
             tl.setDuration(tracklists.get(i).getDuration());
