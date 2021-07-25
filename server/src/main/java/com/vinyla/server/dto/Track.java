@@ -7,7 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class TrackList {
+public class Track {
     String position;
     String title;
     String duration;

@@ -20,7 +20,7 @@ public class HomeController {
     @Autowired
     HomeService homeService;
 
-    @GetMapping("/{userIdx}")
+    @GetMapping("/{userIdx}") // 나중에 token으로 변경
     public ResponseEntity homeInfo(@PathVariable int userIdx){
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
                 ResponseMessage.HOME_INFO_SUCCESS, homeService.homeUserInfo(userIdx)), HttpStatus.OK);

@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 public class SearchVinylDto {
     int id;
-    String coverImage;
+    String thumb;
     String title;
     String artist;
 }
