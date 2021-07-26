@@ -1,7 +1,9 @@
 package com.vinyla.server.service;
 
 import com.vinyla.server.dto.*;
+import com.vinyla.server.mapper.VinylMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -18,6 +20,9 @@ import java.util.List;
 @Service
 @Slf4j
 public class VinylService {
+
+    @Autowired
+    VinylMapper vinylMapper;
 
     @Value("${discogs.key}")
     public String key;
@@ -65,9 +70,10 @@ public class VinylService {
         searchDetailVinylDto.setId(response.getId());
         searchDetailVinylDto.setTitle(response.getTitle());
         searchDetailVinylDto.setArtist(response.getArtists_sort());
-        searchDetailVinylDto.setReleased(response.getReleased());
+        searchDetailVinylDto.setYear(response.getYear());
         searchDetailVinylDto.setGenres(response.getGenres());
 
+        //cover image
         Mono<List<Image>> respImg = resp.map(DiscogsSearchDetail::getImages);
         List<Image> images = respImg.block();
 
@@ -79,6 +85,7 @@ public class VinylService {
             }
         }
 
+        //tracklist
         Mono<List<Track>> respTL = resp.map(DiscogsSearchDetail::getTracklist);
         List<Track> tracklists = respTL.block();
 
@@ -91,6 +98,17 @@ public class VinylService {
         }
         searchDetailVinylDto.setTracklist(responseTL);
 
+        //rate
+
+
         return searchDetailVinylDto;
+    }
+
+    public boolean addVinyl(AddVinylDto addVinylDto){
+        SearchDetailVinylDto vinylDetail = addVinylDto.getVinylDetail();
+        log.info(vinylDetail.getTitle());
+
+        vinylMapper.addVinyl();
+        return true;
     }
 }

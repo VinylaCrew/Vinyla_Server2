@@ -14,7 +14,9 @@ public class SearchDetailVinylDto {
     String title;
     String artist;
     String cover_img;
-    String released;
+    int year;
+    float rate;
+    int rateCount;
     List<String> genres;
     List<Track> tracklist;
 }

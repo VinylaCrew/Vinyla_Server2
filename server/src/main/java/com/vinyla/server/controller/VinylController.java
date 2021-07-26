@@ -1,5 +1,6 @@
 package com.vinyla.server.controller;
 
+import com.vinyla.server.dto.AddVinylDto;
 import com.vinyla.server.service.VinylService;
 import com.vinyla.server.util.DefaultRes;
 import com.vinyla.server.util.ResponseMessage;
@@ -35,6 +36,18 @@ public class VinylController {
         }
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
                 ResponseMessage.VINYL_SEARCH_DETAIL_SUCCESS, vinylService.searchDetail(id)), HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity addVinyl(@RequestBody AddVinylDto addVinylDto){
+        if(vinylService.addVinyl(addVinylDto)){
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                    ResponseMessage.ADD_VINYL_SUCCESS), HttpStatus.OK);
+        }
+        else
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
+                    ResponseMessage.ADD_VINYL_FAIL), HttpStatus.BAD_REQUEST);
+
     }
 
 }
