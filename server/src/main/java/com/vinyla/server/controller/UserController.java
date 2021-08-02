@@ -1,6 +1,7 @@
 package com.vinyla.server.controller;
 
 import com.vinyla.server.dto.CheckDto;
+import com.vinyla.server.service.SecurityService;
 import com.vinyla.server.service.UserService;
 import com.vinyla.server.util.DefaultRes;
 import com.vinyla.server.util.ResponseMessage;
@@ -22,6 +23,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SecurityService securityService;
+
     @PostMapping("/check")
     public ResponseEntity duplicateCheck(@RequestBody CheckDto nickname){
         if(!userService.duplicateCheck(nickname)){
@@ -35,8 +39,15 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public boolean signup(@RequestBody UserVO user){
-        return userService.signUp(user);
+    public ResponseEntity signup(@RequestBody UserVO user){
+        if(user == null){
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.NO_INFORMATION, false), HttpStatus.BAD_REQUEST);
+        }
+        String token = securityService.createToken(user.getUserIdx(), (2*1000*60));
+        log.info("token is here!!! => ", token);
+
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER,
+                true), HttpStatus.OK); //userService.signUp(user, token);
     }
 
 }

@@ -36,9 +36,16 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	compileOnly 'org.mariadb.jdbc:mariadb-java-client:2.6.0'
+<<<<<<< HEAD
+	implementation 'javax.xml.bind:jaxb-api'
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	runtime 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	runtime 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+=======
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	compile 'org.springframework.boot:spring-boot-starter-webflux'
 	compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
+>>>>>>> dev
 }
 
 test {
