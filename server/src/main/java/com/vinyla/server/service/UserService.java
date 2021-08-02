@@ -23,7 +23,7 @@ public class UserService {
 
     }
 
-    public boolean signUp(UserVO user){
+    public boolean signUp(UserVO user, String token){
         userMapper.signUp(user);
         return true;
     }
