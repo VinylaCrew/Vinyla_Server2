@@ -29,10 +29,12 @@ public class UserController {
     @PostMapping("/check")
     public ResponseEntity duplicateCheck(@RequestBody CheckDto nickname){
         if(!userService.duplicateCheck(nickname)){
-            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.DUPLICATE_NICKNAME, false), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
+                    ResponseMessage.DUPLICATE_NICKNAME, false), HttpStatus.BAD_REQUEST);
         }
         else{
-            return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.NO_DUPLICATE, true), HttpStatus.OK);
+            return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                    ResponseMessage.NO_DUPLICATE, true), HttpStatus.OK);
         }
     }
 

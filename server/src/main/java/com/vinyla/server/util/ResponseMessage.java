@@ -15,5 +15,14 @@ public class ResponseMessage {
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
 
+<<<<<<< HEAD
     public static final String NO_INFORMATION = "입력된 정보가 없습니다.";
+=======
+    public static final String VINYL_SEARCH_SUCCESS = "바이닐 검색 성공";
+    public static final String NO_SEARCH_WORD = "검색어가 없습니다.";
+    public static final String VINYL_SEARCH_FAIL = "바이닐 검색 실패";
+
+    public static final String VINYL_SEARCH_DETAIL_SUCCESS = "바이닐 상세 검색 성공";
+    public static final String NO_VINYL_ID = "바이닐 ID가 없습니다.";
+>>>>>>> dev
 }

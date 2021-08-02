@@ -7,4 +7,6 @@ public class TrackVO {
     int trackIdx;
     String position;
     String title;
+    String duration;
+    int vinylIdx;
 }
