@@ -41,13 +41,14 @@ public class UserController {
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody UserVO user){
         if(user == null){
-            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.NO_INFORMATION, false), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
+                    ResponseMessage.NO_INFORMATION, false), HttpStatus.BAD_REQUEST);
         }
         String token = securityService.createToken(user.getUserIdx(), (2*1000*60));
         log.info("token is here!!! => ", token);
 
-        return new ResponseEntity(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER,
-                true), HttpStatus.OK); //userService.signUp(user, token);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                ResponseMessage.CREATED_USER, userService.signUp(user, token)), HttpStatus.OK);
     }
 
 }
