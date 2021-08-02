@@ -1,6 +1,7 @@
 package com.vinyla.server.controller;
 
 import com.vinyla.server.dto.CheckDto;
+import com.vinyla.server.dto.TokenDto;
 import com.vinyla.server.service.SecurityService;
 import com.vinyla.server.service.UserService;
 import com.vinyla.server.util.DefaultRes;
@@ -40,15 +41,18 @@ public class UserController {
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody UserVO user){
+        TokenDto tokenDto = new TokenDto();
+
         if(user == null){
             return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
                     ResponseMessage.NO_INFORMATION, false), HttpStatus.BAD_REQUEST);
         }
-        String token = securityService.createToken(user.getUserIdx(), (2*1000*60));
-        log.info("token is here!!! => ", token);
+        int userIdx = userService.signUp(user);
+        String token = securityService.createToken(userIdx, (2*1000*60));
+        tokenDto.setToken(token);
 
         return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
-                ResponseMessage.CREATED_USER, userService.signUp(user, token)), HttpStatus.OK);
+                ResponseMessage.CREATED_USER, tokenDto), HttpStatus.OK);
     }
 
 }
