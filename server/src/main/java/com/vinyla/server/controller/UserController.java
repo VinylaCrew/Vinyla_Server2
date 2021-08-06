@@ -55,4 +55,19 @@ public class UserController {
                 ResponseMessage.CREATED_USER, tokenDto), HttpStatus.OK);
     }
 
+    @PostMapping("/signin")
+    public ResponseEntity signin(@RequestBody CheckDto user){
+        TokenDto tokenDto = new TokenDto();
+
+        if(user == null){
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
+                    ResponseMessage.NO_INFORMATION, false), HttpStatus.BAD_REQUEST);
+        }
+        int userIdx = userService.signIn(user);
+        String token = securityService.createToken(userIdx, (2*1000*60));
+        tokenDto.setToken(token);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                ResponseMessage.LOGIN_SUCCESS, tokenDto), HttpStatus.OK);
+    }
+
 }

@@ -1,10 +1,7 @@
 package com.vinyla.server.service;
 
-import com.sun.el.parser.Token;
 import com.vinyla.server.dto.CheckDto;
-import com.vinyla.server.dto.TokenDto;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.vinyla.server.mapper.UserMapper;
@@ -33,5 +30,7 @@ public class UserService {
         return userIdx;
     }
 
-//    public boolean signIn()
+    public int signIn(CheckDto user){
+        return userMapper.signIn(user);
+    }
 }
