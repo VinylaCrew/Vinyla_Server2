@@ -1,6 +1,8 @@
 package com.vinyla.server.controller;
 
 import com.vinyla.server.dto.CheckDto;
+import com.vinyla.server.dto.TokenDto;
+import com.vinyla.server.service.SecurityService;
 import com.vinyla.server.service.UserService;
 import com.vinyla.server.util.DefaultRes;
 import com.vinyla.server.util.ResponseMessage;
@@ -22,6 +24,9 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    SecurityService securityService;
+
     @PostMapping("/check")
     public ResponseEntity duplicateCheck(@RequestBody CheckDto nickname){
         if(!userService.duplicateCheck(nickname)){
@@ -35,8 +40,34 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public boolean signup(@RequestBody UserVO user){
-        return userService.signUp(user);
+    public ResponseEntity signup(@RequestBody UserVO user){
+        TokenDto tokenDto = new TokenDto();
+
+        if(user == null){
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
+                    ResponseMessage.NO_INFORMATION, false), HttpStatus.BAD_REQUEST);
+        }
+        int userIdx = userService.signUp(user);
+        String token = securityService.createToken(userIdx, (2*1000*60));
+        tokenDto.setToken(token);
+
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                ResponseMessage.CREATED_USER, tokenDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity signin(@RequestBody CheckDto user){
+        TokenDto tokenDto = new TokenDto();
+
+        if(user == null){
+            return new ResponseEntity(DefaultRes.res(StatusCode.BAD_REQUEST, false,
+                    ResponseMessage.NO_INFORMATION, false), HttpStatus.BAD_REQUEST);
+        }
+        int userIdx = userService.signIn(user);
+        String token = securityService.createToken(userIdx, (2*1000*60));
+        tokenDto.setToken(token);
+        return new ResponseEntity(DefaultRes.res(StatusCode.OK, true,
+                ResponseMessage.LOGIN_SUCCESS, tokenDto), HttpStatus.OK);
     }
 
 }

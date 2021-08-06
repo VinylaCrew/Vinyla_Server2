@@ -23,10 +23,14 @@ public class UserService {
 
     }
 
-    public boolean signUp(UserVO user){
+    public int signUp(UserVO user){
+        UserVO userVO = new UserVO();
         userMapper.signUp(user);
-        return true;
+        int userIdx = userVO.getUserIdx();
+        return userIdx;
     }
 
-//    public boolean signIn()
+    public int signIn(CheckDto user){
+        return userMapper.signIn(user);
+    }
 }

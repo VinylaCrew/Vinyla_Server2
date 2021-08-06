@@ -7,5 +7,12 @@
 
     <insert id="signUp" parameterType="com.vinyla.server.vo.UserVO">
         INSERT INTO user(nickname, profileUrl, instaId) VALUES(#{nickname}, #{profileUrl}, #{instaId})
+        <selectKey keyProperty="userIdx" resultType="Integer" order="AFTER">
+            SELECT LAST_INSERT_ID() as userIdx
+        </selectKey>
     </insert>
+
+    <select id="signIn" resultType="int">
+        SELECT userIdx FROM user WHERE nickname=#{nickname}
+    </select>
 </mapper>
