@@ -11,4 +11,8 @@
             SELECT LAST_INSERT_ID() as userIdx
         </selectKey>
     </insert>
+
+    <select id="signIn" resultType="int">
+        SELECT userIdx FROM user WHERE nickname=#{nickname}
+    </select>
 </mapper>

@@ -10,4 +10,5 @@ import com.vinyla.server.vo.UserVO;
 public interface UserMapper {
     void signUp(UserVO user);
     int duplicateCheck(CheckDto nickname);
+    int signIn(CheckDto nickname);
 }
