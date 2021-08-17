@@ -7,6 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Track {
+public class AddTrackDto {
+    int vinylIdx;
     String title;
 }

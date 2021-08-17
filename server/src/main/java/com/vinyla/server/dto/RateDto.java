@@ -7,6 +7,8 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Track {
-    String title;
+public class RateDto {
+    int vinylIdx;
+    float rate;
+    int rateCount;
 }

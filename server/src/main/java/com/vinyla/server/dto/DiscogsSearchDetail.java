@@ -13,7 +13,7 @@ public class DiscogsSearchDetail {
     int id;
     String title;
     String artists_sort;
-    String released;
+    int year;
     List<Image> images;
     List<String> genres;
     List<Track> tracklist;

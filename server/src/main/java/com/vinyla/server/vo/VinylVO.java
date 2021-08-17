@@ -11,4 +11,5 @@ public class VinylVO {
     float rate;
     int rateCount;
     int id;
+    int year;
 }

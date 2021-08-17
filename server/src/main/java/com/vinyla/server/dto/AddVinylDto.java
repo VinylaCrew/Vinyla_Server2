@@ -7,6 +7,8 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Track {
-    String title;
+public class AddVinylDto {
+    SearchDetailVinylDto vinylDetail;
+    int my_rate;
+    String my_memo;
 }
