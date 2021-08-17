@@ -23,14 +23,11 @@ public class ResponseMessage {
     public static final String VINYL_SEARCH_FAIL = "바이닐 검색 실패";
     public static final String VINYL_SEARCH_DETAIL_SUCCESS = "바이닐 상세 검색 성공";
     public static final String NO_VINYL_ID = "바이닐 ID가 없습니다.";
-<<<<<<< HEAD
     public static final String ADD_VINYL_SUCCESS = "바이닐 등록 성공";
     public static final String ADD_VINYL_FAIL = "바이닐 등록 실패";
-=======
 
     //All
     public static final String INTERNAL_SERVER_ERROR = "서버 내부 에러";
     public static final String DB_ERROR = "데이터베이스 에러";
 
->>>>>>> origin/dev
 }

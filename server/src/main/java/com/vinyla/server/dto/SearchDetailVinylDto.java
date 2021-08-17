@@ -18,5 +18,5 @@ public class SearchDetailVinylDto {
     float rate;
     int rateCount;
     List<String> genres;
-    List<Track> tracklist;
+    List<String> tracklist;
 }

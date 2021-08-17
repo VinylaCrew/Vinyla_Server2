@@ -7,6 +7,7 @@ import lombok.Setter;
 @Data
 @Getter
 @Setter
-public class Track {
-    String title;
+public class GenreDto {
+    int genreIdx;
+    String genreName;
 }

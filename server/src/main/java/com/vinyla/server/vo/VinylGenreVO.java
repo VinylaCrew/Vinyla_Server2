@@ -3,8 +3,7 @@ package com.vinyla.server.vo;
 import lombok.Data;
 
 @Data
-public class TrackVO {
-    int trackIdx;
+public class VinylGenreVO {
     int vinylIdx;
-    String title;
+    int genreIdx;
 }
