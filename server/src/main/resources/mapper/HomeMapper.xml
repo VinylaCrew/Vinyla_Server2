@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vinyla.server.mapper.HomeMapper">
+    <select id="homeUserInfo" resultType="com.vinyla.server.vo.UserVO">
+        SELECT * FROM user WHERE userIdx=#{userIdx}
+    </select>
+
+    <select id="matchRank" resultType="com.vinyla.server.vo.RankVO">
+        SELECT * FROM rank WHERE rankIdx=#{rankIdx}
+    </select>
+
+    <select id="myGenre" resultType="String">
+        SELECT G.genreName FROM genre G JOIN
+            (SELECT A.genreIdx FROM user_genre A JOIN
+                (SELECT MAX(genreNum) AS g FROM user_genre
+                WHERE userIdx=#{userIdx} GROUP BY userIdx) B
+            WHERE A.genreNum = B.g) C
+                ON G.genreIdx = C.genreIdx;
+    </select>
+
+    <select id="myVinyl" resultType="com.vinyla.server.vo.VinylVO">
+        SELECT * FROM vinyl WHERE vinylIdx = (
+            SELECT vinylIdx FROM user_vinyl WHERE userIdx=#{userIdx} AND my_vinyl = 1);
+    </select>
+
+    <select id="recentVinyls" resultType="com.vinyla.server.vo.VinylVO">
+        SELECT A.* FROM vinyl A JOIN (
+            SELECT vinylIdx FROM user_vinyl WHERE userIdx=#{userIdx} AND my_vinyl=0
+            ORDER BY diggedAt DESC LIMIT 4) B
+            ON A.vinylIdx=B.vinylIdx;
+    </select>
+</mapper>

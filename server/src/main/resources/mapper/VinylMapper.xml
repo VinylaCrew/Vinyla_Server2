@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTDMapper3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vinyla.server.mapper.VinylMapper">
+    <select id="hasVinyl" resultType="Integer">
+        SELECT vinylIdx FROM vinyl WHERE id = #{id}
+    </select>
+
+    <insert id="addNewVinyl" parameterType="com.vinyla.server.vo.VinylVO" keyProperty="vinylIdx" useGeneratedKeys="true">
+        INSERT INTO vinyl(title, imageUrl, artist, id, year, rate, rateCount) VALUES(#{title}, #{imageUrl}, #{artist}, #{id}, #{year}, #{rate}, 1)
+    </insert>
+
+    <update id="setRate" parameterType="com.vinyla.server.dto.RateDto">
+        UPDATE vinyl SET rate=#{rate}, rateCount=#{rateCount} WHERE vinylIdx=#{vinylIdx}
+    </update>
+
+    <insert id="addTrack" parameterType="com.vinyla.server.dto.AddTrackDto">
+        INSERT INTO track(vinylIdx, title) VALUES(#{vinylIdx}, #{title})
+    </insert>
+
+    <insert id="addUserVinyl" parameterType="com.vinyla.server.vo.UserVinylVO">
+        INSERT INTO user_vinyl(userIdx, vinylIdx, rate, comment) VALUES(#{userIdx}, #{vinylIdx}, #{rate}, #{comment})
+    </insert>
+
+    <update id="addVinylNum" parameterType="int">
+        UPDATE user SET vinylNum = vinylNum+1 WHERE userIdx=#{userIdx}
+    </update>
+
+    <select id="hasGenre" resultType="Integer">
+        SELECT genreIdx FROM genre WHERE genreName=#{genreName}
+    </select>
+
+    <insert id="addGenre" parameterType="String" useGeneratedKeys="true" keyProperty="genreIdx">
+        INSERT INTO genre(genreName) VALUES(#{genreName})
+<!--        <selectKey keyProperty="genreIdx" resultType="int" order="AFTER">-->
+<!--            SELECT LAST_INSERT_ID()-->
+<!--        </selectKey>-->
+    </insert>
+
+    <insert id="addVinylGenre" parameterType="com.vinyla.server.vo.VinylGenreVO">
+        INSERT INTO vinyl_genre(vinylIdx, genreIdx) VALUES(#{vinylIdx}, #{genreIdx})
+    </insert>
+    
+    <insert id="addUserGenre" parameterType="com.vinyla.server.vo.UserGenreVO">
+        INSERT INTO user_genre(userIdx, genreIdx, genreNum) VALUES(#{userIdx}, #{genreIdx}, 1)
+    </insert>
+    
+    <update id="addGenreNum" parameterType="com.vinyla.server.vo.UserGenreVO">
+        UPDATE user_genre SET genreNum = genreNum+1 WHERE userIdx=#{userIdx} AND genreIdx=#{genreIdx}
+    </update>
+</mapper>
